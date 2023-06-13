@@ -17,8 +17,8 @@ class NumberStats:
     triggers=WEB_GET,
     examples=(Example(name="dev", params={"name": "Dev"}, result="Hello Dev!"),),
 )
-def say_hello(name: str) -> str:
-    return f"Hello {name}!"
+def say_hello(name: str = "User") -> str:
+    """Just a dummy"""
 
 
 @action(
@@ -29,8 +29,8 @@ def say_hello(name: str) -> str:
         ),
     ),
 )
-def save_number_stats(number_stats: NumberStats) -> int:
-    return number_stats.value
+def save_number_stats(number_stats: NumberStats, insert: bool = False) -> int:
+    """Just a dummy"""
 
 
 ACTIONS = [get_action(say_hello), get_action(save_number_stats)]

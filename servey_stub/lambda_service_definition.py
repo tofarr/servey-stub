@@ -74,10 +74,7 @@ class LambdaServiceDefinition(ServiceDefinitionABC):
         writer.write("            }\n        }\n")
         writer.write('        result_ = lambda_utils.invoke_lambda("')
         use_router = self.use_router_for_all or "<locals>" in action.fn.__qualname__
-        if use_router:
-            fn_name = self.router_name
-        else:
-            fn_name = action.name
+        fn_name = self.router_name if use_router else action.name
         writer.write(self.lambda_name_pattern.format(fn_name=fn_name))
         writer.write('", event_)\n')
         result_type_name = getattr(sig.return_annotation, "__name__", None) or str(

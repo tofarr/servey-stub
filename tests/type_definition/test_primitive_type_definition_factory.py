@@ -3,6 +3,7 @@ from typing import Type, Optional
 from unittest import TestCase
 from uuid import UUID
 
+from servey_stub.type_definition.imports_definition import ImportsDefinition
 from servey_stub.type_definition.primitive_type_definition_factory import (
     PrimitiveTypeDefinitionFactory,
 )
@@ -14,7 +15,7 @@ class TestPrimitiveTypeDefinitionFactory(TestCase):
         self._create_type_definition(bool)
 
     def test_create_type_definition_datetime(self):
-        self._create_type_definition(datetime, "datetime.datetime")
+        self._create_type_definition(datetime, ImportsDefinition(["datetime.datetime"]))
 
     def test_create_type_definition_float(self):
         self._create_type_definition(float)
@@ -26,12 +27,14 @@ class TestPrimitiveTypeDefinitionFactory(TestCase):
         self._create_type_definition(str)
 
     def test_create_type_definition_uuid(self):
-        self._create_type_definition(UUID, "uuid.UUID")
+        self._create_type_definition(UUID, ImportsDefinition(["uuid.UUID"]))
 
-    def _create_type_definition(self, type_: Type, import_name: Optional[str] = None):
+    def _create_type_definition(
+        self, type_: Type, imports: Optional[ImportsDefinition] = None
+    ):
         factory = PrimitiveTypeDefinitionFactory()
         type_definition = factory.create_type_definition(type_, None)
-        expected = TypeDefinition(type_.__name__, import_name)
+        expected = TypeDefinition(type_.__name__, imports)
         self.assertEqual(type_definition, expected)
 
     def test_create_type_definition_unknown(self):

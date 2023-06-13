@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -20,7 +21,7 @@ def read_file(path: Path):
 
 
 def get_existing_content(path: Path):
-    if not path.exists():
+    if not os.path.exists(path):
         return
     with open(path, "r") as reader:
         lines = reader.read().split("\n")

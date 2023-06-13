@@ -7,6 +7,9 @@ from servey_stub.type_definition.dataclass_type_definition_factory import (
 from servey_stub.type_definition.enum_type_definition_factory import (
     EnumTypeDefinitionFactory,
 )
+from servey_stub.type_definition.generic_type_definition_factory import (
+    GenericTypeDefinitionFactory,
+)
 from servey_stub.type_definition.primitive_type_definition_factory import (
     PrimitiveTypeDefinitionFactory,
 )
@@ -21,3 +24,4 @@ def configure(context: MarshallerContext):
     register_impl(TypeDefinitionFactoryABC, DataclassTypeDefinitionFactory, context)
     register_impl(TypeDefinitionFactoryABC, PrimitiveTypeDefinitionFactory, context)
     register_impl(TypeDefinitionFactoryABC, EnumTypeDefinitionFactory, context)
+    register_impl(TypeDefinitionFactoryABC, GenericTypeDefinitionFactory, context)

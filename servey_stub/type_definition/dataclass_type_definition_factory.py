@@ -4,6 +4,7 @@ from io import StringIO
 from pathlib import Path
 from typing import Type, Optional
 
+from marshy import ExternalType
 from servey.util import to_snake_case
 
 from servey_stub.type_definition.dataclass_definition import DataclassDefinition
@@ -26,7 +27,9 @@ class DataclassTypeDefinitionFactory(TypeDefinitionFactoryABC):
         name = type_.__name__
         snake_name = to_snake_case(name)
         model_package_name = f"{context.model_package_name}.{snake_name}.{name}"
-        type_definition = TypeDefinition(name, model_package_name)
+        type_definition = TypeDefinition(
+            name, ImportsDefinition([model_package_name.split(".")])
+        )
         context.type_definitions[type_] = type_definition  # Prevent recursion
         model_file = Path(context.model_dir, (snake_name + ".py"))
         dataclass_definition = self.create_dataclass_definition(type_, context)
@@ -44,9 +47,14 @@ class DataclassTypeDefinitionFactory(TypeDefinitionFactoryABC):
         # noinspection PyDataclass
         for field in fields(type_):
             field_type_definition = context.get_type_definition(field.type)
+            if field_type_definition.imports:
+                imports.add_all(field_type_definition.imports)
             schema = field.metadata.get("schemey")
-            if schema:
+            if schema and not has_ref(schema.schema):
                 schema = schema.schema
+                imports.add("schemey.schema_from_json")
+            else:
+                schema = None
             field_definition = FieldDefinition(
                 name=field.name,
                 type=field_type_definition.type_name,
@@ -54,6 +62,7 @@ class DataclassTypeDefinitionFactory(TypeDefinitionFactoryABC):
                 schema=schema,
             )
             field_definitions.append(field_definition)
+        imports = imports.optimize()
         dataclass_definition = DataclassDefinition(
             name=type_.__name__,
             imports=imports,
@@ -65,6 +74,18 @@ class DataclassTypeDefinitionFactory(TypeDefinitionFactoryABC):
 def default_value_to_str(field):
     if field.default is MISSING:
         return None
-    if isinstance(field.default, bool):
+    if field.default in (True, False, None):
         return str(field.default)
     return json.dumps(field.default)
+
+
+def has_ref(schema: ExternalType) -> bool:
+    if isinstance(schema, dict):
+        for s in schema.values():
+            if has_ref(s):
+                return True
+    elif isinstance(schema, list):
+        for s in schema:
+            if has_ref(s):
+                return True
+    return False

@@ -17,8 +17,10 @@ def get_type_definitions() -> Dict[Type, TypeDefinition]:
         float: TypeDefinition(float.__name__),
         int: TypeDefinition(int.__name__),
         str: TypeDefinition(str.__name__),
-        UUID: TypeDefinition(UUID.__name__, "uuid.UUID"),
-        datetime: TypeDefinition(datetime.__name__, "datetime.datetime"),
+        UUID: TypeDefinition(UUID.__name__, ImportsDefinition(["uuid.UUID"])),
+        datetime: TypeDefinition(
+            datetime.__name__, ImportsDefinition(["datetime.datetime"])
+        ),
     }
 
 

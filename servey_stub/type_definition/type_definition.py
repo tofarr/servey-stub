@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from servey_stub.type_definition.imports_definition import ImportsDefinition
+
 
 @dataclass
 class TypeDefinition:
     type_name: str
-    import_name: Optional[str] = None
+    imports: Optional[ImportsDefinition] = None

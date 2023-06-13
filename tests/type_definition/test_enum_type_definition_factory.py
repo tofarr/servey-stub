@@ -6,6 +6,7 @@ from unittest.mock import patch
 from servey_stub.type_definition.enum_type_definition_factory import (
     EnumTypeDefinitionFactory,
 )
+from servey_stub.type_definition.imports_definition import ImportsDefinition
 from servey_stub.type_definition.type_definition import TypeDefinition
 from servey_stub.type_definition.type_definition_context import TypeDefinitionContext
 from tests.mock_file_system import MockFileSystem
@@ -25,7 +26,9 @@ class TestEnumTypeDefinitionFactory(TestCase):
             type_definition = factory.create_type_definition(FooBar, context)
         self.assertEqual(
             type_definition,
-            TypeDefinition("FooBar", "my_project.models.foo_bar.FooBar"),
+            TypeDefinition(
+                "FooBar", ImportsDefinition(["my_project.models.foo_bar.FooBar"])
+            ),
         )
         self.assertEqual(1, len(mock_file_system.contents))
         content = (

@@ -7,6 +7,7 @@ from typing import Type, Optional
 
 from servey.util import to_snake_case
 
+from servey_stub.type_definition.imports_definition import ImportsDefinition
 from servey_stub.type_definition.type_definition import TypeDefinition
 from servey_stub.type_definition.type_definition_context import TypeDefinitionContext
 from servey_stub.type_definition.type_definition_factory_abc import (
@@ -26,7 +27,10 @@ class EnumTypeDefinitionFactory(TypeDefinitionFactoryABC):
             return
         name = type_.__name__
         type_definition = TypeDefinition(
-            name, context.model_package_name + "." + to_snake_case(name) + "." + name
+            name,
+            ImportsDefinition(
+                [context.model_package_name + "." + to_snake_case(name) + "." + name]
+            ),
         )
         model_file = context.model_dir / (to_snake_case(name) + ".py")
         writer = StringIO()

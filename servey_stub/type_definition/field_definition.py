@@ -24,9 +24,9 @@ class FieldDefinition:
                 writer.write("default=")
                 writer.write(self.default_value)
                 writer.write(", ")
-            writer.write('metadata={"schemey": ')
+            writer.write('metadata={"schemey": schema_from_json(')
             json.dump(self.schema, writer)
-            writer.write("})")
+            writer.write(")})")
         elif self.default_value is not None:
             writer.write(" = ")
             writer.write(self.default_value)

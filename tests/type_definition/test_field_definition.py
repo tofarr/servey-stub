@@ -13,7 +13,10 @@ class TestFieldDefinition(TestCase):
         )
         writer = StringIO()
         field_definition.write(writer)
-        expected = '    foo: str = field(default="bar", metadata={"schemey": {"type": "string", "maxLength": 64}})\n'
+        expected = (
+            '    foo: str = field(default="bar", '
+            'metadata={"schemey": schema_from_json({"type": "string", "maxLength": 64})})\n'
+        )
         value = writer.getvalue()
         self.assertEqual(expected, value)
 
@@ -23,7 +26,7 @@ class TestFieldDefinition(TestCase):
         )
         writer = StringIO()
         field_definition.write(writer)
-        expected = '    foo: str = field(metadata={"schemey": {"type": "string", "maxLength": 64}})\n'
+        expected = '    foo: str = field(metadata={"schemey": schema_from_json({"type": "string", "maxLength": 64})})\n'
         value = writer.getvalue()
         self.assertEqual(expected, value)
 

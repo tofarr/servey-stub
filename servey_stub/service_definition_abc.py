@@ -1,7 +1,8 @@
 import inspect
+import json
 import os
 from abc import ABC, abstractmethod
-from dataclasses import field, dataclass, MISSING
+from dataclasses import field, dataclass
 from io import StringIO, IOBase
 from pathlib import Path
 from typing import List, Optional, Tuple
@@ -49,8 +50,8 @@ class ServiceDefinitionABC(ABC):
         )
         for type_ in _get_types_for_actions(self.actions):
             type_definition = context.get_type_definition(type_)
-            if type_definition.import_name:
-                imports.add(type_definition.import_name)
+            if type_definition.imports:
+                imports.add_all(type_definition.imports)
         imports = imports.optimize()
         return imports, context
 
@@ -136,7 +137,10 @@ class ServiceDefinitionABC(ABC):
             writer.write(context.type_definitions[param.annotation].type_name)
             if param.default is not sig.empty:
                 writer.write(" = ")
-                writer.write(str(param.default))
+                if isinstance(param.default, str):
+                    writer.write(json.dumps(param.default))
+                else:
+                    writer.write(str(param.default))
         writer.write("):\n")
 
     @abstractmethod

@@ -13,6 +13,9 @@ class ImportsDefinition:
             path = path.split(".")
         self.imports.append(path)
 
+    def add_all(self, imports: ImportsDefinition):
+        self.imports.extend(imports.imports)
+
     def optimize(self) -> ImportsDefinition:
         root_imports = set()
         optimized_imports = {}
