@@ -68,7 +68,9 @@ class HttpServiceDefinition(ServiceDefinitionABC):
         writer.write(url)
         writer.write('", "')
         writer.write(trigger.method.value)
-        writer.write('", event_)\n')
+        writer.write('", event_, ')
+        writer.write(str(action.timeout))
+        writer.write(')\n')
         writer.write(
             "        loaded_result_ = marshy.load(result_)\n        return loaded_result_\n\n"
         )

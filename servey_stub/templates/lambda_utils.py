@@ -7,6 +7,7 @@ _lambda_client = None
 
 
 def get_lambda_client():
+    # pylint: disable=W0603
     global _lambda_client
     if not _lambda_client:
         _lambda_client = boto3.client("lambda")

@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Type, Optional
 
-from servey_stub.type_definition.imports_definition import ImportsDefinition
 from servey_stub.type_definition.type_definition import TypeDefinition
 
 _TypeDefinitionContext = (

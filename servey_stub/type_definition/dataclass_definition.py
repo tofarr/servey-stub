@@ -6,10 +6,6 @@ from servey_stub.type_definition.field_definition import FieldDefinition
 from servey_stub.type_definition.imports_definition import ImportsDefinition
 
 
-def _default_dataclass_imports():
-    return ImportsDefinition([["dataclasses", "dataclass"]])
-
-
 @dataclass
 class DataclassDefinition:
     """
@@ -17,7 +13,7 @@ class DataclassDefinition:
     """
 
     name: str
-    imports: ImportsDefinition = field(default_factory=_default_dataclass_imports)
+    imports: ImportsDefinition
     fields: List[FieldDefinition] = field(default_factory=list)
     description: Optional[str] = None
 
@@ -30,5 +26,5 @@ class DataclassDefinition:
             writer.write('    """')
             writer.write(self.description.replace("\n", "\n    "))
             writer.write('    """\n')
-        for field in self.fields:
-            field.write(writer)
+        for field_ in self.fields:
+            field_.write(writer)

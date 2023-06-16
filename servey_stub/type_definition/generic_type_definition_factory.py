@@ -20,7 +20,7 @@ class GenericTypeDefinitionFactory(TypeDefinitionFactoryABC):
         name = str(type_)
         imports = ImportsDefinition()
         if name.startswith("typing."):
-            prefix = name.split("[")[0]
+            prefix = name.split("[", maxsplit=1)[0]
             imports.add(prefix)
             arg_names = []
             for arg in typing_inspect.get_args(type_):

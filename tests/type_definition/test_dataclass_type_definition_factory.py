@@ -9,6 +9,8 @@ from schemey.string_format import StringFormat
 
 from servey_stub.type_definition.dataclass_type_definition_factory import (
     DataclassTypeDefinitionFactory,
+    has_ref,
+    default_value_to_str,
 )
 from servey_stub.type_definition.imports_definition import ImportsDefinition
 from servey_stub.type_definition.type_definition import TypeDefinition
@@ -108,6 +110,15 @@ class TestEnumTypeDefinitionFactory(TestCase):
             ],
         }
         self.assertEqual(expected_contents, contents)
+
+    def test_has_ref(self):
+        self.assertFalse(has_ref("foobar"))
+        self.assertTrue(has_ref({"ping": [10, False, {"$ref": "#/foo/bar"}]}))
+
+    def test_default_value_to_str(self):
+        self.assertEqual('"foo"', default_value_to_str(field(default="foo")))
+        self.assertEqual("10", default_value_to_str(field(default=10)))
+        self.assertEqual("True", default_value_to_str(field(default=True)))
 
 
 @dataclass

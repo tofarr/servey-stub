@@ -81,6 +81,8 @@ def default_value_to_str(field):
 
 def has_ref(schema: ExternalType) -> bool:
     if isinstance(schema, dict):
+        if schema.get("$ref"):
+            return True
         for s in schema.values():
             if has_ref(s):
                 return True

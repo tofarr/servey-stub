@@ -5,7 +5,6 @@ from unittest.mock import patch
 import servey_stub
 from servey_stub.lambda_service_definition import LambdaServiceDefinition
 from tests.fixtures import ACTIONS, create_mock_file_system
-from tests.mock_file_system import MockFileSystem, ResetOnCloseStringIO
 
 
 class TestLambdaServiceDefinition(TestCase):
@@ -39,6 +38,7 @@ class TestLambdaServiceDefinition(TestCase):
                 "",
                 "",
                 "def get_lambda_client():",
+                "    # pylint: disable=W0603",
                 "    global _lambda_client",
                 "    if not _lambda_client:",
                 '        _lambda_client = boto3.client("lambda")',
