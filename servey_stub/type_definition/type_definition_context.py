@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Dict, Type
 
-from marshy.factory.impl_marshaller_factory import get_impls
+from injecty import get_impls
 
 from servey_stub.errors import StubError
 from servey_stub.type_definition.type_definition import TypeDefinition

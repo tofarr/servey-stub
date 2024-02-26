@@ -1,5 +1,4 @@
-from marshy.factory.impl_marshaller_factory import register_impl
-from marshy.marshaller_context import MarshallerContext
+from injecty import InjectyContext
 
 from servey_stub.type_definition.dataclass_type_definition_factory import (
     DataclassTypeDefinitionFactory,
@@ -20,8 +19,13 @@ from servey_stub.type_definition.type_definition_factory_abc import (
 priority = 100
 
 
-def configure(context: MarshallerContext):
-    register_impl(TypeDefinitionFactoryABC, DataclassTypeDefinitionFactory, context)
-    register_impl(TypeDefinitionFactoryABC, PrimitiveTypeDefinitionFactory, context)
-    register_impl(TypeDefinitionFactoryABC, EnumTypeDefinitionFactory, context)
-    register_impl(TypeDefinitionFactoryABC, GenericTypeDefinitionFactory, context)
+def configure(context: InjectyContext):
+    context.register_impls(
+        TypeDefinitionFactoryABC,
+        [
+            DataclassTypeDefinitionFactory,
+            PrimitiveTypeDefinitionFactory,
+            EnumTypeDefinitionFactory,
+            GenericTypeDefinitionFactory,
+        ],
+    )

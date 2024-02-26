@@ -11,7 +11,7 @@ extras_require = {
         "pytest~=7.2",
         "pytest-cov~=4.0",
         "pytest-xdist~=3.2",
-        "pylint~=2.17",
+        "pylint~=3.0",
     ],
 }
 extras_require["all"] = list(
@@ -35,7 +35,8 @@ setuptools.setup(
     package_data={"": ["*.txt"]},
     include_package_data=True,
     install_requires=[
-        "servey~=2.8",
+        "injecty~=0.0",
+        "servey~=4.0",
     ],
     extras_require=extras_require,
     setup_requires=["setuptools-git-versioning"],
