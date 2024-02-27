@@ -29,5 +29,5 @@ class GenericTypeDefinitionFactory(TypeDefinitionFactoryABC):
                     arg_names.append(arg_type_definition.type_name)
                     if arg_type_definition.imports:
                         imports.add_all(arg_type_definition.imports)
-            type_name = f"{prefix}[{', '.join(arg_names)}]"
+            type_name = f"{prefix[7:]}[{', '.join(arg_names)}]"
             return TypeDefinition(type_name, imports)

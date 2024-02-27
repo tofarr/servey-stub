@@ -8,7 +8,7 @@ from servey.trigger.web_trigger import WebTrigger
 def main():
     parser = argparse.ArgumentParser(description="Servey")
     parser.add_argument("--mode", required=True)
-    parser.add_argument("--dir", default="servey_stub")
+    parser.add_argument("--outdir", default="servey_stub")
     parser.add_argument("--only", default="")
     parser.add_argument("--exclude", default="")
     args, _ = parser.parse_known_args()
