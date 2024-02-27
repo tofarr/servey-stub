@@ -61,6 +61,8 @@ class DataclassTypeDefinitionFactory(TypeDefinitionFactoryABC):
                 default_value=default_value_to_str(field),
                 schema=schema,
             )
+            if field_definition.default_value or field_definition.schema:
+                imports.add("dataclasses.field")
             field_definitions.append(field_definition)
         imports = imports.optimize()
         dataclass_definition = DataclassDefinition(

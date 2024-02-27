@@ -66,12 +66,12 @@ respects.
 
 ## Mock
 
-Generates a service stub for invoking actions as mocks, and places it in the specified output directory. The mocks are
-based on definitions in the servey actions.
+Generates a service stub for invoking actions as mocks, and places it in the output directory. The mocks are
+based on definitions in the servey actions and the servey_main
 
-`python -m servey_stub --mode=mock`
+`python -m servey_stub --mode=mock --outdir=output`
 
-Yields: `/servey_stub/my-service-mock/...`
+Yields: `/output/my-service-mock/...`
 
 ## Example
 

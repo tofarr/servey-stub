@@ -6,6 +6,7 @@ from servey_stub.type_definition.dataclass_type_definition_factory import (
 from servey_stub.type_definition.enum_type_definition_factory import (
     EnumTypeDefinitionFactory,
 )
+from servey_stub.type_definition.forward_ref_definition_factory import ForwardRefDefinitionFactory
 from servey_stub.type_definition.generic_type_definition_factory import (
     GenericTypeDefinitionFactory,
 )
@@ -27,5 +28,6 @@ def configure(context: InjectyContext):
             PrimitiveTypeDefinitionFactory,
             EnumTypeDefinitionFactory,
             GenericTypeDefinitionFactory,
+            ForwardRefDefinitionFactory,
         ],
     )

@@ -33,7 +33,7 @@ class ServiceDefinitionABC(ABC):
     version: str = field(
         default_factory=lambda: os.environ.get("SERVEY_API_VERSION") or "0.1.0"
     )
-    install_requires: List[str] = field(default_factory=lambda: ["marshy"])
+    install_requires: List[str] = field(default_factory=lambda: ["marshy", "schemey"])
 
     @property
     def service_type_name(self):
