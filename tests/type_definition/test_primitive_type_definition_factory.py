@@ -15,7 +15,9 @@ class TestPrimitiveTypeDefinitionFactory(TestCase):
         self._create_type_definition(bool)
 
     def test_create_type_definition_datetime(self):
-        self._create_type_definition(datetime, ImportsDefinition([["datetime", "datetime"]]))
+        self._create_type_definition(
+            datetime, ImportsDefinition([["datetime", "datetime"]])
+        )
 
     def test_create_type_definition_float(self):
         self._create_type_definition(float)
