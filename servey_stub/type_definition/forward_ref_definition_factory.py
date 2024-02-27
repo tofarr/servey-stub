@@ -1,6 +1,5 @@
 from typing import Type, Optional, ForwardRef
 
-import typing_inspect
 from marshy.utils import resolve_forward_refs
 
 from servey_stub.type_definition.imports_definition import ImportsDefinition
@@ -24,4 +23,4 @@ class ForwardRefDefinitionFactory(TypeDefinitionFactoryABC):
         imports = ImportsDefinition()
         imports.add("typing.ForwardRef")
         ref = ".".join(type_definition.imports.imports[0])
-        return TypeDefinition(f"ForwardRef(\"{ref}\")", imports)
+        return TypeDefinition(f'ForwardRef("{ref}")', imports)

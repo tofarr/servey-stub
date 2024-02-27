@@ -113,7 +113,7 @@ class TestMockServiceDefinition(TestCase):
                 '    name="greeter",',
                 '    version="0.1.0",',
                 '    packages=setuptools.find_packages(exclude=("tests*")),',
-                "    install_requires=['marshy'],",
+                "    install_requires=['marshy', 'schemey'],",
                 ")",
                 "",
             ],

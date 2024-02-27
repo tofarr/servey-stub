@@ -15,7 +15,7 @@ class TestPrimitiveTypeDefinitionFactory(TestCase):
         self._create_type_definition(bool)
 
     def test_create_type_definition_datetime(self):
-        self._create_type_definition(datetime, ImportsDefinition(["datetime.datetime"]))
+        self._create_type_definition(datetime, ImportsDefinition([["datetime", "datetime"]]))
 
     def test_create_type_definition_float(self):
         self._create_type_definition(float)
@@ -27,7 +27,7 @@ class TestPrimitiveTypeDefinitionFactory(TestCase):
         self._create_type_definition(str)
 
     def test_create_type_definition_uuid(self):
-        self._create_type_definition(UUID, ImportsDefinition(["uuid.UUID"]))
+        self._create_type_definition(UUID, ImportsDefinition([["uuid", "UUID"]]))
 
     def _create_type_definition(
         self, type_: Type, imports: Optional[ImportsDefinition] = None
