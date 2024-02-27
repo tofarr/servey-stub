@@ -28,7 +28,7 @@ class LambdaServiceDefinition(ServiceDefinitionABC):
         == 1
     )
     router_name: str = "servey_router"
-    install_requires: List[str] = field(default_factory=lambda: ["boto3", "marshy"])
+    install_requires: List[str] = field(default_factory=lambda: ["boto3", "marshy", "schemey"])
 
     def generate_scaffold_pys(self, package_dir: Path, models_dir: Path):
         super().generate_scaffold_pys(package_dir, models_dir)

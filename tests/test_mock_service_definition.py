@@ -110,7 +110,7 @@ class TestMockServiceDefinition(TestCase):
                 "import setuptools",
                 "",
                 "setuptools.setup(",
-                '    name="greeter",',
+                '    name="greeter_mock",',
                 '    version="0.1.0",',
                 '    packages=setuptools.find_packages(exclude=("tests*")),',
                 "    install_requires=['marshy', 'schemey'],",

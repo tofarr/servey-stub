@@ -64,7 +64,7 @@ class ServiceDefinitionABC(ABC):
         self.generate_setup_py(project_dir, service_name)
 
     def generate_directories(self, service_name: str) -> Tuple[Path, Path, Path]:
-        project_dir = Path(self.output_dir, service_name + "_" + self.service_type_name)
+        project_dir = Path(self.output_dir, f"{service_name}_{self.service_type_name}")
         package_dir = Path(project_dir, service_name)
         models_dir = Path(package_dir, "models")
         models_dir.mkdir(parents=True, exist_ok=True)
@@ -79,7 +79,7 @@ class ServiceDefinitionABC(ABC):
             Path(Path(servey_stub.__file__).parent, "templates", "setup.txt")
         )
         setup_content = setup_content.format(
-            service_name=service_name,
+            service_name=f"{service_name}_{self.service_type_name}",
             version=self.version,
             install_requires=self.install_requires,
         )

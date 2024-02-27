@@ -17,7 +17,7 @@ from servey_stub.utils import update_file, get_existing_content
 
 @dataclass
 class HttpServiceDefinition(ServiceDefinitionABC):
-    install_requires: List[str] = field(default_factory=lambda: ["marshy", "requests"])
+    install_requires: List[str] = field(default_factory=lambda: ["marshy", "requests", "schemey"])
     service_root_url: str = field(default_factory=lambda: os.environ.get("SERVER_HOST"))
 
     def generate_scaffold_pys(self, package_dir: Path, models_dir: Path):
