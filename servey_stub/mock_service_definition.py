@@ -67,10 +67,7 @@ class MockServiceDefinition(ServiceDefinitionABC):
             writer.write('": marshy.dump(')
             writer.write(param.name)
             writer.write(", ")
-            type_name = getattr(param.annotation, "__name__", None) or str(
-                param.annotation
-            )
-            writer.write(type_name)
+            writer.write(context.type_definitions[param.annotation].type_name)
             writer.write("),\n")
         writer.write("        }\n")
         writer.write('        result_ = mock_utils.get_mock_result("')
