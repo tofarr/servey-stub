@@ -71,6 +71,6 @@ class HttpServiceDefinition(ServiceDefinitionABC):
         writer.write('", event_, ')
         writer.write(str(action.timeout))
         writer.write(")\n")
-        writer.write(
-            "        loaded_result_ = marshy.load(result_)\n        return loaded_result_\n\n"
-        )
+        writer.write("        loaded_result_ = marshy.load(")
+        writer.write(context.type_definitions[sig.return_annotation].type_name)
+        writer.write(", result_)\n        return loaded_result_\n\n")

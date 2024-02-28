@@ -141,7 +141,11 @@ class ServiceDefinitionABC(ABC):
                     writer.write(json.dumps(param.default))
                 else:
                     writer.write(str(param.default))
-        writer.write("):\n")
+        writer.write(")")
+        if sig.return_annotation:
+            writer.write(" -> ")
+            writer.write(context.type_definitions[sig.return_annotation].type_name)
+        writer.write(":\n")
 
     @abstractmethod
     def write_function_body(

@@ -76,6 +76,6 @@ class MockServiceDefinition(ServiceDefinitionABC):
         writer.write('        result_ = mock_utils.get_mock_result("')
         writer.write(action.name)
         writer.write('", event_, MOCKS)\n')
-        writer.write(
-            "        loaded_result_ = marshy.load(result_)\n        return loaded_result_\n\n"
-        )
+        writer.write("        loaded_result_ = marshy.load(")
+        writer.write(context.type_definitions[sig.return_annotation].type_name)
+        writer.write(", result_)\n        return loaded_result_\n\n")
