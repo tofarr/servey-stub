@@ -7,8 +7,10 @@ from io import StringIO, IOBase
 from pathlib import Path
 from typing import List, Optional, Tuple
 
+from marshy.factory.optional_marshaller_factory import get_optional_type
 from servey.action.action import Action
 from servey.finder.action_finder_abc import find_actions_with_trigger_type
+from servey.security.authorization import Authorization
 from servey.trigger.web_trigger import WebTrigger
 from servey.util import to_snake_case, get_servey_main
 
@@ -93,6 +95,8 @@ class ServiceDefinitionABC(ABC):
         context: TypeDefinitionContext,
     ):
         writer = StringIO()
+        imports.add("dataclasses.dataclass")
+        imports = imports.optimize()
         self.write(imports, context, writer)
         service_content = writer.getvalue()
         service_file = Path(package_dir, service_name + ".py")
@@ -107,17 +111,18 @@ class ServiceDefinitionABC(ABC):
             self.write_action(action, context, writer)
 
     def write_class_header(self, writer: IOBase):
-        writer.write("\n\n")
+        writer.write("\n\n@dataclass\n")
         writer.write("class ")
         writer.write("".join(s.title() for s in self.service_name.split("_")))
-        writer.write(":\n\n")
+        writer.write(":\n    authorization_token: str = None\n\n")
 
     def write_action(
         self, action: Action, context: TypeDefinitionContext, writer: IOBase
     ):
         sig = inspect.signature(action.fn)
+        sig, auth_param = _separate_auth_param(sig)
         self.write_function_header(action, sig, context, writer)
-        self.write_function_body(action, sig, context, writer)
+        self.write_function_body(action, sig, auth_param, context, writer)
         writer.write("\n")
 
     @staticmethod
@@ -147,11 +152,13 @@ class ServiceDefinitionABC(ABC):
             writer.write(context.type_definitions[sig.return_annotation].type_name)
         writer.write(":\n")
 
+    # pylint: disable=R0913
     @abstractmethod
     def write_function_body(
         self,
         action: Action,
         sig: inspect.Signature,
+        auth_param: Optional[inspect.Parameter],
         context: TypeDefinitionContext,
         writer: IOBase,
     ):
@@ -164,3 +171,19 @@ def _get_types_for_actions(actions: List[Action]):
         for param in sig.parameters.values():
             yield param.annotation
         yield sig.return_annotation
+
+
+def _separate_auth_param(
+    sig: inspect.Signature,
+) -> Tuple[inspect.Signature, Optional[inspect.Parameter]]:
+    params = []
+    auth_param = None
+    for param in sig.parameters.values():
+        annotation = get_optional_type(param.annotation) or param.annotation
+        if auth_param is None and annotation == Authorization:
+            auth_param = param
+        else:
+            params.append(param)
+    if auth_param:
+        sig = sig.replace(parameters=params)
+    return sig, auth_param

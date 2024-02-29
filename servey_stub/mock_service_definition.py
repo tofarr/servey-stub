@@ -3,7 +3,7 @@ import json
 from dataclasses import dataclass
 from io import IOBase
 from pathlib import Path
-from typing import Tuple
+from typing import Tuple, Optional
 
 from marshy.types import ExternalItemType
 from servey.action.action import Action
@@ -48,15 +48,17 @@ class MockServiceDefinition(ServiceDefinitionABC):
     def write_class_header(self, writer: IOBase):
         writer.write("\n\nMOCKS = ")
         json.dump(self.gather_examples(), writer)
-        writer.write("\n\n\n")
+        writer.write("\n\n\n@dataclass\n")
         writer.write("class ")
         writer.write("".join(s.title() for s in self.service_name.split("_")))
         writer.write(":\n\n")
 
+    # pylint: disable=R0913
     def write_function_body(
         self,
         action: Action,
         sig: inspect.Signature,
+        auth_param: Optional[inspect.Parameter],
         context: TypeDefinitionContext,
         writer: IOBase,
     ):
@@ -69,6 +71,10 @@ class MockServiceDefinition(ServiceDefinitionABC):
             writer.write(", ")
             writer.write(context.type_definitions[param.annotation].type_name)
             writer.write("),\n")
+        if auth_param:
+            writer.write('            "')
+            writer.write(auth_param.name)
+            writer.write('": self.authorization_token,\n')
         writer.write("        }\n")
         writer.write('        result_ = mock_utils.get_mock_result("')
         writer.write(action.name)

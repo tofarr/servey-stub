@@ -3,7 +3,7 @@ import os
 from dataclasses import dataclass, field
 from io import IOBase
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from servey.action.action import Action
 from servey.util import get_servey_main
@@ -52,10 +52,12 @@ class LambdaServiceDefinition(ServiceDefinitionABC):
         imports = imports.optimize()
         return imports, type_definition_context
 
+    # pylint: disable=R0913
     def write_function_body(
         self,
         action: Action,
         sig: inspect.Signature,
+        auth_param: Optional[inspect.Parameter],
         context: TypeDefinitionContext,
         writer: IOBase,
     ):
@@ -70,7 +72,10 @@ class LambdaServiceDefinition(ServiceDefinitionABC):
             writer.write(", ")
             writer.write(context.type_definitions[param.annotation].type_name)
             writer.write("),\n")
-        writer.write("            }\n        }\n")
+        writer.write("            },\n")
+        if auth_param:
+            writer.write('            "authorization": self.authorization_token,\n')
+        writer.write("        }\n")
         writer.write('        result_ = lambda_utils.invoke_lambda("')
         use_router = self.use_router_for_all or "<locals>" in action.fn.__qualname__
         fn_name = self.router_name if use_router else action.name

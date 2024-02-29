@@ -75,6 +75,7 @@ class TestMockServiceDefinition(TestCase):
                 "",
             ],
             "servey_stub/greeter_mock/greeter/greeter.py": [
+                "from dataclasses import dataclass",
                 "from greeter import mock_utils",
                 "from greeter.models.number_stats import NumberStats",
                 "import marshy",
@@ -83,6 +84,7 @@ class TestMockServiceDefinition(TestCase):
                 'MOCKS = {"say_hello": [[{"name": "Dev"}, "Hello Dev!"]], "save_number_stats": [[{"number_stats": {"name": "one", "value": 1}}, 1]]}',
                 "",
                 "",
+                "@dataclass",
                 "class Greeter:",
                 "",
                 '    def say_hello(self, name: str = "User") -> str:',
